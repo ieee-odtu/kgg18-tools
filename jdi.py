@@ -2,6 +2,7 @@ import sys
 import requests
 import json
 import time
+import re
 
 if len(sys.argv) != 4:
     print("Usage: python3", sys.argv[0] + "<json_file> <server_addr> <phpsessid>")
@@ -22,7 +23,8 @@ print("  => Found", len(jd), "record(s)\n")
 print("[+] Sending to server:", webserver, end=" ... ", flush=True)
 
 for reg in jd:
-    requests.post("http://" + webserver + "/kgg/do_stuff.php", data = reg, cookies = {"PHPSESSID": php_cookie})
+    _ws = "http://" + webserver if not re.match("^https?://.*$", webserver) else webserver
+    requests.post(_ws + "/kgg/do_stuff.php", data = reg, cookies = {"PHPSESSID": php_cookie})
 
 print("DONE.")
 time.sleep(0.5)

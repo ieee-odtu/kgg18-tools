@@ -7,7 +7,7 @@ import time
 _clarify = lambda x: re.sub(' +',' ', x.replace(".", ". ").replace("-", " ")).strip()
 _low = lambda x: x.replace("İ", "i").replace("I", "ı").lower()
 _upp = lambda x: x.replace("i", "İ").replace("ı", "I").upper()
-_tit = lambda x: " ".join([_upp(_x[0]) + _x[1:] for _x in _clarify(x).split(" ")])
+_tit = lambda x: " ".join([_upp(_x[0]) + _low(_x[1:]) for _x in _clarify(x).split(" ")])
 
 data_file = sys.argv[1]
 out_file = sys.argv[2]
@@ -55,7 +55,8 @@ for row in data.iterrows():
             "kurum": sch,
             "bolum": dept,
             "sinif": grd,
-            "email": _low(row[1]["email"])
+            "email": _low(row[1]["email"]),
+            "job": "add_participant"
         })
     except Exception as e:
         print("\n[ERR]", e)
